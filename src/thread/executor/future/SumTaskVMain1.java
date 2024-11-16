@@ -1,16 +1,13 @@
-package thread.control.join;
+package thread.executor.future;
 
 import static util.MyLogger.log;
-import static util.ThreadUtils.sleep;
 
-public class JoinMainV3 {
+public class SumTaskVMain1 {
 
     public static void main(String[] args) throws InterruptedException {
         log("Start");
-
         SumTask task1 = new SumTask(1, 50);
         SumTask task2 = new SumTask(51, 100);
-
         Thread thread1 = new Thread(task1, "Thread-1");
         Thread thread2 = new Thread(task2, "Thread-2");
 
@@ -25,7 +22,7 @@ public class JoinMainV3 {
 
         log("task1.result: " + task1.result);
         log("task2.result: " + task2.result);
-        
+
         final var sumAll = task1.result + task2.result;
         log("task1 + task2 = " + sumAll);
         log("End");
@@ -45,7 +42,11 @@ public class JoinMainV3 {
         @Override
         public void run() {
             log("작업 시작");
-            sleep(2000);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             int sum = 0;
             for (int i = startValue; i <= endValue; i++) {
                 sum += i;
